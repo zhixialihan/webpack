@@ -4,8 +4,43 @@ const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const cssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = {
+  //代码分离方法一（缺点：共享资源重复打包）
+
+  // entry: {
+  //   index: './src/index.js',//打包入口
+  //   another: './src/another-modules.js' 
+  // },
+
+  // 代码分离方法二
+
+  // entry: {
+  //   index: {
+  //     import: './src/index.js',//打包入口
+  //     dependOn: 'shared',//将一些共享文件定义出来
+  //   },
+  //   another: {
+  //     import: './src/another-modules.js',
+  //     dependOn: 'shared',
+  //   },
+  //   shared: 'lodash',//当2个模块里都有lodash的时候就会把lodash给抽离出来，并把他取名为叫做shared的一个chunk
+  // },
+
+  // 代码分离方法二 方法2 的第2种 使用optimization下的splitChunks，可以自动做公共文件抽离
+
+  // entry: {
+  //   index: './src/index.js',//打包入口
+  //   another: './src/another-modules.js'
+  // },
+
+  // 方法三
+  entry: {
+    index: './src/index.js',//打包入口
+    another: './src/another-modules.js'
+  },
+
   output: {//打包输出路径，出口
-    filename: 'bundle.js',//指定输出文件名字
+    // filename: 'bundle.js', //单文件出口 指定输出文件名字 
+    filename: '[name].bundle.js', //多文件出口 指定输出文件名字 -代码分离
     path: path.resolve(__dirname, './dist'),//文件的输出路径，只能是绝对路径
     clean: true, //清理掉上次生成残留文件
     //方法1 资源放置位置
@@ -107,7 +142,11 @@ module.exports = {
   optimization: {
     minimizer: [
       new cssMinimizerWebpackPlugin() //压缩css代码
-    ]
+    ],
+    //方法2 的第2种
+    splitChunks: {
+      chunks: 'all'
+    }
   }
 }
 /*

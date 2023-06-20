@@ -6,6 +6,10 @@ import txt1 from './assets/1.txt'
 import './index.css'
 import './index.less'
 import './assets/style.css'
+// import _ from 'lodash'
+import './async-module.js'
+
+
 helloWord()
 
 // const img = document.createElement('img')
@@ -25,3 +29,6 @@ const block = document.createElement('div')
 block.textContent = txt1
 block.classList.add('block-bg')
 document.body.appendChild(block)
+
+
+// console.log(_.join(['11', '22', '33'], '-'))
